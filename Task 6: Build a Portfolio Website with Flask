@@ -1,0 +1,99 @@
+from flask import Flask, render_template_string, request
+
+app = Flask(__name__)
+
+# CSS Styling
+style = """
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 20px;
+    color: #333;
+}
+header {
+    background: #333;
+    color: white;
+    padding: 10px;
+    text-align: center;
+}
+h1, h2 {
+    color: #444;
+}
+form {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 300px;
+}
+input, textarea {
+    width: 100%;
+    margin: 5px 0;
+    padding: 8px;
+}
+a {
+    display: inline-block;
+    margin-top: 10px;
+    color: #333;
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: underline;
+}
+</style>
+"""
+
+# Home Page Template
+index_html = style + """
+<header>
+    <h1>Gowtham B - Portfolio</h1>
+</header>
+<section>
+    <h2>About Me</h2>
+    <p>Hello! I'm Gowtham B, a passionate developer skilled in Python, Flask, C, and Web Development. 
+    I enjoy building projects that solve real-world problems.</p>
+</section>
+<section>
+    <h2>Projects</h2>
+    <ul>
+        <li>DNN Partitioning for Inference Throughput Acceleration at the Edge (IEEE Paper)</li>
+        <li>REST API with Flask</li>
+        <li>Web Scraper for News Headlines</li>
+    </ul>
+</section>
+<a href="/contact">Contact Me</a>
+"""
+
+# Contact Page Template
+contact_html = style + """
+<h1>Contact Me</h1>
+<p>Email: gowtham@example.com</p>
+<form method="POST">
+    <label>Name:</label>
+    <input type="text" name="name" required><br>
+    
+    <label>Email:</label>
+    <input type="email" name="email" required><br>
+    
+    <label>Message:</label>
+    <textarea name="message" required></textarea><br>
+    
+    <button type="submit">Send</button>
+</form>
+<br>
+<a href="/">Back to Home</a>
+"""
+
+@app.route('/')
+def home():
+    return render_template_string(index_html)
+
+@app.route('/contact', methods=['GET', 'POST'])
+def contact():
+    if request.method == 'POST':
+        name = request.form['name']
+        return f"<h1>Thank you {name}, your message has been sent!</h1><br><a href='/'>Back to Home</a>"
+    return render_template_string(contact_html)
+
+if __name__ == '__main__':
+    app.run(debug=True)
